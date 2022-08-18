@@ -50,7 +50,7 @@ const Register = () => {
           <p className="text-red-600">{String(errors.email?.message)}</p>
         )}
         <input
-          className="border border-black px-1 py-1"
+          className="border border-black px-1 py-1 mt-1"
           type="text"
           placeholder="Your Name"
           {...register('name')}
