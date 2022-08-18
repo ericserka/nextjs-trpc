@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { CreateUserInput, createUserSchema } from '@/schema/user.schema'
 import { trpc } from '@/utils/trpc'
 
-const Register = () => {
+export default function Register() {
   const router = useRouter()
   const { mutate, error, isLoading } = trpc.useMutation(
     ['users.register-user'],
@@ -79,5 +79,3 @@ const Register = () => {
     </>
   )
 }
-
-export default Register

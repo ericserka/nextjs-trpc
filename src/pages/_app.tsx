@@ -14,14 +14,8 @@ config.autoAddCss = false
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      {/* add the favicon to all pages */}
       <Head>
         <title>Next.js + tRPC</title>
-        <meta
-          name="description"
-          content="Blog where you can create new news to keep the public always up to date"
-        />
-        <link rel="shortcut icon" href="favicon.ico" />
       </Head>
       <Component {...pageProps} />
     </>

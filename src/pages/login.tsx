@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { CreateUserInput } from '@/schema/user.schema'
 import { trpc } from '@/utils/trpc'
 
-const Login = () => {
+export default function Login() {
   const router = useRouter()
   const { mutate, error } = trpc.useMutation(['users.register-user'], {
     onSuccess: () => {
@@ -22,5 +22,3 @@ const Login = () => {
     </>
   )
 }
-
-export default Login
