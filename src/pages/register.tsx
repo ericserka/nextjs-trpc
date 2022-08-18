@@ -1,11 +1,11 @@
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { CreateUserInput, createUserSchema } from '../schema/user.schema'
 import { trpc } from '../utils/trpc'
-import WhiteSpinner from '../assets/white-spinner.svg'
-import Image from 'next/image'
 
 const Register = () => {
   const router = useRouter()
@@ -63,7 +63,12 @@ const Register = () => {
           className="mt-3 rounded-lg bg-sky-300 hover:bg-sky-400 px-2 py-2 font-bold"
           type="submit"
         >
-          {isLoading && <Image alt="loading" src={WhiteSpinner} />}
+          {isLoading && (
+            <FontAwesomeIcon
+              className="inline mr-3 w-4 h-4 text-white fa-spin"
+              icon={faSpinner}
+            />
+          )}
           {isLoading ? 'Loading...' : 'Register'}
         </button>
         <br />
