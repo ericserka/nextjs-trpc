@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { CreateUserInput } from '../schema/user.schema'
-import { trpc } from '../utils/trpc'
+import { CreateUserInput } from '@/schema/user.schema'
+import { trpc } from '@/utils/trpc'
 
 const Login = () => {
   const router = useRouter()

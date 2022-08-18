@@ -1,7 +1,7 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import * as trpcServer from '@trpc/server'
-import { createUserSchema } from '../../schema/user.schema'
-import { checkDBConn } from '../../utils/prisma'
+import { createUserSchema } from '@/schema/user.schema'
+import { checkDBConn } from '@/utils/prisma'
 import { createRouter } from '../createRouter'
 
 export const userRouter = createRouter().mutation('register-user', {
