@@ -11,6 +11,7 @@
     "format-all": "prettier --write 'src/**/*.{ts,tsx}'"
   },
   "dependencies": {
+    "@hookform/resolvers": "^2.9.7",
     "@prisma/client": "^4.2.1",
     "@trpc/client": "^9.27.0",
     "@trpc/next": "^9.27.0",
