@@ -1,6 +1,7 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import * as trpcServer from '@trpc/server'
 import { createUserSchema } from '../../schema/user.schema'
+import { checkDBConn } from '../../utils/prisma'
 import { createRouter } from '../createRouter'
 
 export const userRouter = createRouter().mutation('register-user', {
@@ -14,6 +15,7 @@ export const userRouter = createRouter().mutation('register-user', {
         },
       })
     } catch (e) {
+      checkDBConn(e)
       if (e instanceof PrismaClientKnownRequestError) {
         // check https://www.prisma.io/docs/reference/api-reference/error-reference for errors codes
         // Unique constraint failed on the {constraint}
