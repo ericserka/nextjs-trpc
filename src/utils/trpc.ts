@@ -1,3 +1,3 @@
-import { createReactQueryHooks } from "@trpc/react";
+import { createReactQueryHooks } from '@trpc/react'
 
 export const trpc = createReactQueryHooks()
