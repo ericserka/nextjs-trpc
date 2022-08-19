@@ -1,5 +1,14 @@
 # Fullstack application using Next.js and tRPC.
 
+## How to initialize
+
+1. Have a mysql running locally.
+2. Customize the database url in `.env` file as per your credentials.
+3. Install the dependencies: `yarn`
+4. Run Prisma migrations to create the database and tables: `npx prisma migrate dev`.
+5. Start the application: `yarn dev`.
+6. Both API and client will be running on port 3000.
+
 ## How was it built
 
 1. Create an app next: `npx create-next-app@latest nextjs-trpc --ts`
