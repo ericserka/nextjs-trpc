@@ -24,7 +24,6 @@ model LoginToken {
   id        String   @unique @default(uuid())
   user      User     @relation(fields: [userId], references: [id])
   userId    String
-  redirect  String   @default("/")
   createdAt DateTime @default(now())
 }
 

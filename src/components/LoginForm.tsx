@@ -9,27 +9,34 @@ import { useForm } from 'react-hook-form'
 
 const VerifyToken = ({ hash }: { hash: string }) => {
   const router = useRouter()
-  const { data, isLoading } = trpc.useQuery([
+  const verifyOtp = trpc.useQuery([
     'users.verify-otp',
     {
       hash,
     },
   ])
 
-  if (isLoading) {
+  if (verifyOtp.isLoading) {
     return (
       <p className="text-5xl text-center font-bold">
         Token found. Checking validity...
       </p>
     )
   }
-  router.push(data?.redirect.includes('login') ? '/' : data?.redirect || '/')
 
-  return (
-    <p className="text-5xl text-center font-bold">
-      Valid Token. Redirecting...
-    </p>
-  )
+  if (verifyOtp.isSuccess) {
+    router.push('/')
+    return (
+      <p className="text-5xl text-center font-bold">
+        Valid Token. Redirecting...
+      </p>
+    )
+  } else {
+    if (verifyOtp.isError) {
+      alert(verifyOtp.error.message)
+    }
+    return <></>
+  }
 }
 
 export default function LoginForm() {
@@ -51,7 +58,7 @@ export default function LoginForm() {
   })
 
   const onSubmit = (values: RequestOtpInput) => {
-    mutate({ ...values, redirect: router.asPath })
+    mutate(values)
   }
 
   const hash = router.asPath.split('#token=')[1]

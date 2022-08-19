@@ -53,7 +53,6 @@ export const userRouter = createRouter()
         })
         const token = await ctx.prisma.loginToken.create({
           data: {
-            redirect: input.redirect,
             user: {
               connect: {
                 id: user.id,
@@ -97,7 +96,7 @@ export const userRouter = createRouter()
         const jwt = signJwt({ email: token.user.email, id: token.user.id })
         ctx.res.setHeader('Set-Cookie', serialize('token', jwt, { path: '/' }))
         return {
-          redirect: token.redirect,
+          message: 'success',
         }
       } catch (e) {
         checkDBConn(e)

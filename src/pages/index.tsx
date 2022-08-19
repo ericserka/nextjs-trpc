@@ -85,11 +85,32 @@ const Home: NextPage = () => {
     }
     return (
       <div className="grid place-items-center container mx-auto">
-        <div
-          onClick={() => router.push('/posts/new')}
-          className="mt-4 rounded-lg bg-purple-300 hover:bg-purple-400 font-bold text-center text-2xl p-10 cursor-pointer"
-        >
-          Create post
+        <div className="flex flex-row justify-between w-full">
+          <div
+            onClick={() => router.push('/posts/new')}
+            className="mt-4 rounded-lg bg-purple-300 hover:bg-purple-400 font-bold text-center text-2xl p-10 cursor-pointer"
+          >
+            Create post
+          </div>
+
+          <div
+            onClick={() => {
+              // clear cookies
+              document.cookie.split(';').forEach(function (c) {
+                document.cookie = c
+                  .replace(/^ +/, '')
+                  .replace(
+                    /=.*/,
+                    '=;expires=' + new Date().toUTCString() + ';path=/'
+                  )
+              })
+              // refresh page
+              router.reload()
+            }}
+            className="mt-4 rounded-lg bg-red-400 hover:bg-red-500 font-bold text-center text-2xl p-10 cursor-pointer"
+          >
+            Logout
+          </div>
         </div>
         <h1 className="mt-6 text-5xl font-bold text-center">Your Posts</h1>
         {posts.isError && (
