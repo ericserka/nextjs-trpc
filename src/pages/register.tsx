@@ -26,7 +26,6 @@ export default function Register() {
     formState: { errors },
   } = useForm<CreateUserInput>({
     resolver: zodResolver(createUserSchema),
-    defaultValues: { name: undefined, email: undefined },
   })
 
   const onSubmit = (values: CreateUserInput) => {

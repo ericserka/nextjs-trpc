@@ -1,5 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-import { PrismaClientInitializationError } from '@prisma/client/runtime'
+import {
+  PrismaClientInitializationError,
+  PrismaClientKnownRequestError,
+} from '@prisma/client/runtime'
 import * as trpcServer from '@trpc/server'
 
 // prevent multiple instances
@@ -19,5 +22,21 @@ export const checkDBConn = (e: any) => {
       code: 'INTERNAL_SERVER_ERROR',
       message: 'Failed to connect to the database. Try again later.',
     })
+  }
+}
+
+export const updateOrDeleteNonexistentRecord = (
+  error: any,
+  entityName: string
+) => {
+  if (error instanceof PrismaClientKnownRequestError) {
+    // check https://www.prisma.io/docs/reference/api-reference/error-reference for errors codes
+    // An operation failed because it depends on one or more records that were required but not found. {cause}
+    if (error.code === 'P2025') {
+      throw new trpcServer.TRPCError({
+        code: 'NOT_FOUND',
+        message: `${entityName} not found`,
+      })
+    }
   }
 }

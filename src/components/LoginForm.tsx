@@ -48,7 +48,6 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm<RequestOtpInput>({
     resolver: zodResolver(requestOtpSchema),
-    defaultValues: { redirect: undefined, email: undefined },
   })
 
   const onSubmit = (values: RequestOtpInput) => {
