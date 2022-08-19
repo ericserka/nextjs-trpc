@@ -11,9 +11,18 @@ datasource db {
 }
 
 model User {
+  id          String       @unique @default(uuid())
+  email       String       @unique
+  name        String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  loginTokens LoginToken[]
+}
+
+model LoginToken {
   id        String   @unique @default(uuid())
-  email     String   @unique
-  name      String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  redirect  String   @default("/")
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }

@@ -3,7 +3,7 @@
 ## How was it built
 
 1. Create an app next: `npx create-next-app@latest nextjs-trpc --ts`
-2. Install the dependencies: `yarn add @trpc/client @trpc/server @trpc/react @trpc/next zod react-query superjson jotai @prisma/client react-hook-form @hookform/resolvers jsonwebtoken cookie nodemailer @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome && yarn add @types/jsonwebtoken @types/cookie @types/nodemailer lint-staged prettier tailwindcss postcss autoprefixer -D`
+2. Install the dependencies: `yarn add @trpc/client @trpc/server @trpc/react @trpc/next zod react-query superjson @prisma/client react-hook-form @hookform/resolvers jsonwebtoken cookie nodemailer @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome handlebars && yarn add @types/jsonwebtoken @types/cookie @types/nodemailer lint-staged prettier tailwindcss postcss autoprefixer -D`
 3. Add [husky](#husky): `npx husky-init && yarn`
 4. Create Prettier configuration file: `echo {}> .prettierrc.json`. It is interesting to have the Prettier extension installed in Visual Studio Code. To check Prettier configuration options, see [Options Prettier](https://prettier.io/docs/en/options.html)
 5. Initializes Tailwind CSS: `npx tailwindcss init -p`. Fill the `tailwind.config.js` content with the paths of the tsx files and add `@tailwind base; @tailwind components; @tailwind utilities;` in `globals.css`. For more information, consult: [Install Tailwind CSS with Next.js](https://tailwindcss.com/docs/guides/nextjs)

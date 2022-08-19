@@ -1,41 +1,67 @@
+import { RequestOtpInput, requestOtpSchema } from '@/schema/user.schema'
+import { trpc } from '@/utils/trpc'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
-import { CreateUserInput, createUserSchema } from '@/schema/user.schema'
-import { trpc } from '@/utils/trpc'
 
-export default function Register() {
+const VerifyToken = ({ hash }: { hash: string }) => {
   const router = useRouter()
-  const { mutate, error, isLoading } = trpc.useMutation(
-    ['users.register-user'],
+  const { data, isLoading } = trpc.useQuery([
+    'users.verify-otp',
     {
-      onSuccess: () => {
-        router.push('/login')
-      },
-      onError: (error: any) => {
-        alert(error.message)
-      },
-    }
+      hash,
+    },
+  ])
+
+  if (isLoading) {
+    return (
+      <p className="text-5xl text-center font-bold">
+        Token found. Checking validity...
+      </p>
+    )
+  }
+  router.push(data?.redirect.includes('login') ? '/' : data?.redirect || '/')
+
+  return (
+    <p className="text-5xl text-center font-bold">
+      Valid Token. Redirecting...
+    </p>
   )
+}
+
+export default function LoginForm() {
+  const router = useRouter()
+  const { mutate, error, isLoading } = trpc.useMutation(['users.request-otp'], {
+    onSuccess: () => {
+      alert('Check your email')
+    },
+    onError: (error: any) => {
+      alert(error.message)
+    },
+  })
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<CreateUserInput>({
-    resolver: zodResolver(createUserSchema),
-    defaultValues: { name: undefined, email: undefined },
+  } = useForm<RequestOtpInput>({
+    resolver: zodResolver(requestOtpSchema),
+    defaultValues: { redirect: undefined, email: undefined },
   })
 
-  const onSubmit = (values: CreateUserInput) => {
-    mutate(values)
+  const onSubmit = (values: RequestOtpInput) => {
+    mutate({ ...values, redirect: router.asPath })
   }
 
+  const hash = router.asPath.split('#token=')[1]
+  if (hash) {
+    return <VerifyToken hash={hash} />
+  }
   return (
     <>
-      <h1 className="text-6xl text-center font-bold">Register</h1>
+      <h1 className="text-6xl text-center font-bold">Login</h1>
       {/* another way to handle errors is access directly */}
       {/* {error && error.message} */}
       <form className="mt-20 ml-5" onSubmit={handleSubmit(onSubmit)}>
@@ -49,16 +75,6 @@ export default function Register() {
         {errors.email?.message && (
           <p className="text-red-600">{errors.email?.message}</p>
         )}
-        <input
-          className="border border-black px-1 py-1 mt-1"
-          type="text"
-          placeholder="Your Name"
-          {...register('name')}
-        />
-        <br />
-        {errors.name?.message && (
-          <p className="text-red-600">{errors.name?.message}</p>
-        )}
         <button
           className="mt-3 rounded-lg bg-sky-300 enabled:hover:bg-sky-400 px-2 py-2 font-bold"
           type="submit"
@@ -70,13 +86,13 @@ export default function Register() {
               icon={faSpinner}
             />
           )}
-          {isLoading ? 'Loading...' : 'Register'}
+          {isLoading ? 'Loading...' : 'Login'}
         </button>
         <br />
         <div className="mt-3">
-          <Link href="/login">
+          <Link href="/register">
             <a className="rounded-lg bg-slate-300 hover:bg-slate-400 px-2 py-2 font-bold">
-              Login
+              Register
             </a>
           </Link>
         </div>
