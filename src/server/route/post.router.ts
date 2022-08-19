@@ -45,6 +45,11 @@ export const postRouter = createRouter()
         const items = await ctx.prisma.post.findMany({
           take: PERPAGE + 1, // get an extra item at the end which we'll use as next cursor
           cursor: input.cursor ? { id: input.cursor } : undefined,
+          where: {
+            user: {
+              id: ctx?.user?.id,
+            },
+          },
         })
         let nextCursor: typeof input.cursor | undefined = undefined
         if (items.length > PERPAGE) {

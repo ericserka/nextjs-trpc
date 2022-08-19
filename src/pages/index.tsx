@@ -30,7 +30,7 @@ const Home: NextPage = () => {
     getNextPageParam: (lastPage) => lastPage?.nextCursor,
   })
   const deleteMutation = trpc.useMutation(['posts.delete'], {
-    onSuccess: (data) => {
+    onSuccess: () => {
       posts.refetch()
     },
     onError: (error) => {
@@ -100,44 +100,56 @@ const Home: NextPage = () => {
         <div className="grid place-items-center mt-6">
           {posts.data?.pages.map((d, i) => (
             <div key={i}>
-              {d?.items.map((item) => (
-                <div key={item.id} className="flex space-x-4 m-1">
-                  <p>{item.title}</p>
-                  <FontAwesomeIcon
-                    className="text-blue-300 cursor-pointer"
-                    icon={faInfo}
-                    onClick={() => router.push(`/posts/${item.id}`)}
-                  />
-                  <FontAwesomeIcon
-                    className="cursor-pointer"
-                    icon={faEdit}
-                    onClick={() => {
-                      setPost({
-                        postId: item.id,
-                        title: item.title,
-                        body: item.body,
-                      })
-                      setValue('body', item.body)
-                      setValue('title', item.title)
-                      setValue('postId', item.id)
-                      setShowEditModal(true)
-                    }}
-                  />
-                  <button
-                    onClick={() => setClicked(item.id)}
-                    disabled={deleteMutation.isLoading}
-                  >
-                    {deleteMutation.isLoading && clicked === item.id ? (
-                      <FontAwesomeIcon className="fa-spin" icon={faSpinner} />
-                    ) : (
+              {Number(d?.items?.length) > 0 ? (
+                <>
+                  {d?.items.map((item) => (
+                    <div key={item.id} className="flex space-x-4 m-1">
+                      <p>{item.title}</p>
                       <FontAwesomeIcon
-                        className="text-red-600"
-                        icon={faTrash}
+                        className="text-blue-300 cursor-pointer"
+                        icon={faInfo}
+                        onClick={() => router.push(`/posts/${item.id}`)}
                       />
-                    )}
-                  </button>
-                </div>
-              ))}
+                      <FontAwesomeIcon
+                        className="cursor-pointer"
+                        icon={faEdit}
+                        onClick={() => {
+                          setPost({
+                            postId: item.id,
+                            title: item.title,
+                            body: item.body,
+                          })
+                          setValue('body', item.body)
+                          setValue('title', item.title)
+                          setValue('postId', item.id)
+                          setShowEditModal(true)
+                        }}
+                      />
+                      <button
+                        onClick={() => setClicked(item.id)}
+                        disabled={deleteMutation.isLoading}
+                      >
+                        {deleteMutation.isLoading && clicked === item.id ? (
+                          <FontAwesomeIcon
+                            className="fa-spin"
+                            icon={faSpinner}
+                          />
+                        ) : (
+                          <FontAwesomeIcon
+                            className="text-red-600"
+                            icon={faTrash}
+                          />
+                        )}
+                      </button>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <h1 className="text-3xl">
+                  You dont have any posts yet. Try creating it by clicking the
+                  button above.
+                </h1>
+              )}
             </div>
           ))}
         </div>
