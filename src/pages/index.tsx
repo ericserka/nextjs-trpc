@@ -1,5 +1,5 @@
-import { useUserContext } from '@/context/user.context'
 import { UpdatePostInput, updatePostSchema } from '@/schema/post.schema'
+import { objectEquals } from '@/utils/snippets'
 import { trpc } from '@/utils/trpc'
 import {
   faEdit,
@@ -8,16 +8,15 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { zodResolver } from '@hookform/resolvers/zod'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import CustomModal from '../components/CustomModal'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { objectEquals } from '@/utils/snippets'
 
 const Home: NextPage = () => {
-  const user = useUserContext()
+  const user = trpc.useQuery(['users.me'])
   const router = useRouter()
   const [clicked, setClicked] = useState('')
   const [showEditModal, setShowEditModal] = useState(false)
@@ -72,7 +71,7 @@ const Home: NextPage = () => {
     }
   }, [clicked])
 
-  if (!user) {
+  if (user.isSuccess && !user.data) {
     router.push('/login')
     return <></>
   } else {
